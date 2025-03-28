@@ -46,23 +46,6 @@ public class Mmovement : MonoBehaviour
             }
         }
     }
-
-    private void LookAtMouse()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hitInfo))
-        {
-            Vector3 targetPosition = hitInfo.point;
-            Vector3 lookDirection = targetPosition - transform.position;
-            lookDirection.y = 0; // Alleen op de y-as kijken
-
-            if (lookDirection != Vector3.zero)
-            {
-                transform.rotation = Quaternion.LookRotation(lookDirection);
-            }
-        }
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("onGround"))
