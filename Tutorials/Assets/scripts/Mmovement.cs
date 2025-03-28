@@ -7,7 +7,7 @@ public class Mmovement : MonoBehaviour
 {
     [SerializeField] private float speed = 50f;
     Rigidbody m_Rigidbody;
-    public float m_Thrust = 20f;
+    [SerializeField] private float jumpForce = 20f;
     private bool onGround;
 
     // Start is called before the first frame update
@@ -19,38 +19,63 @@ public class Mmovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Jump();
         if (Input.GetKey(KeyCode.D))
         {
             transform.position += transform.forward * speed * Time.deltaTime;
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        }   
+        }
         if (Input.GetKey(KeyCode.A))
         {
             transform.position -= transform.forward * speed * Time.deltaTime;
-            transform.rotation = Quaternion.Euler(0, 180, 0);
         }
         if (Input.GetKey(KeyCode.W))
         {
             transform.position -= transform.right * speed * Time.deltaTime;
-            transform.rotation = Quaternion.Euler(0, 180, 0);
         }
         if (Input.GetKey(KeyCode.S))
         {
             transform.position += transform.right * speed * Time.deltaTime;
-            transform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && onGround == true)
+        void Jump()
+        {
+            if (Input.GetKeyDown(KeyCode.Space) && onGround)
             {
-            m_Rigidbody.AddForce(transform.up * m_Thrust);
+                m_Rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                onGround = false;
+            }
         }
     }
 
-        private void OnCollisionEnter(Collision collision)
+    private void LookAtMouse()
     {
-        if (collision.gameObject.tag == "onGround")
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hitInfo))
+        {
+            Vector3 targetPosition = hitInfo.point;
+            Vector3 lookDirection = targetPosition - transform.position;
+            lookDirection.y = 0; // Alleen op de y-as kijken
+
+            if (lookDirection != Vector3.zero)
+            {
+                transform.rotation = Quaternion.LookRotation(lookDirection);
+            }
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("onGround"))
         {
             onGround = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("onGround"))
+        {
+            onGround = false;
         }
     }
 }
