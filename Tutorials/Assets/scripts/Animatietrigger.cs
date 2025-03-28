@@ -18,17 +18,22 @@ public class Animatietrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.E))
-        {
-            m_Animator.SetTrigger("Dance");
-            Console.WriteLine("Dance");
-
-        }
-
         if (Input.GetKey(KeyCode.R))
         {
             m_Animator.SetTrigger("Idle");
             Console.WriteLine("Idle");
+        }
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            m_Animator.SetTrigger("Walk");
+            Console.WriteLine("Walk");
+        }
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            m_Animator.SetTrigger("WalkR");
+            Console.WriteLine("WalkR");
         }
     }
 }
