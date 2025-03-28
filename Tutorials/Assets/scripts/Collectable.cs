@@ -5,12 +5,15 @@ using UnityEngine;
 
 public class Collectable : MonoBehaviour
 {
+    private AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
 
     }
     public static event Action OnCollected;
+
     // Update is called once per frame
     void Update()
     {
@@ -23,6 +26,7 @@ public class Collectable : MonoBehaviour
         {
             OnCollected?.Invoke();
             Destroy(gameObject);
+            audioSource.Play();
         }
     }
 }
