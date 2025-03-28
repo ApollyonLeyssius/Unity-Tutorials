@@ -5612,6 +5612,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1712618618437542704, guid: 1d57754073f3d164d9ac2df9fe4b4c7c, type: 3}
+      propertyPath: particleEffectPrefab
+      value: 
+      objectReference: {fileID: 579474593}
     - target: {fileID: 3859826141635605445, guid: 1d57754073f3d164d9ac2df9fe4b4c7c, type: 3}
       propertyPath: m_Name
       value: Sphere

@@ -6,15 +6,15 @@ using UnityEngine;
 public class Collectable : MonoBehaviour
 {
     private AudioSource audioSource;
-    // Start is called before the first frame update
+    public GameObject particleEffectPrefab; // Sleep hier je particle effect prefab in
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-
     }
+
     public static event Action OnCollected;
 
-    // Update is called once per frame
     void Update()
     {
         transform.localRotation = Quaternion.Euler(90f, Time.time * 100f, 0);
@@ -25,8 +25,29 @@ public class Collectable : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             OnCollected?.Invoke();
-            Destroy(gameObject);
-            audioSource.Play();
+
+            // Particle effect afspelen
+            if (particleEffectPrefab != null)
+            {
+                Instantiate(particleEffectPrefab, transform.position, Quaternion.identity);
+            }
+
+            // Geluid afspelen
+            if (audioSource != null)
+            {
+                audioSource.Play();
+                StartCoroutine(DestroyAfterSound());
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
+    }
+
+    private IEnumerator DestroyAfterSound()
+    {
+        yield return new WaitForSeconds(audioSource.clip.length);
+        Destroy(gameObject);
     }
 }
