@@ -26,13 +26,11 @@ public class Collectable : MonoBehaviour
         {
             OnCollected?.Invoke();
 
-            // Particle effect afspelen
             if (particleEffectPrefab != null)
             {
                 Instantiate(particleEffectPrefab, transform.position, Quaternion.identity);
             }
 
-            // Geluid afspelen
             if (audioSource != null)
             {
                 audioSource.Play();
